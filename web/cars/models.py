@@ -1,16 +1,44 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models
-
 # Create your models here.
+from proctor.utils.model import ObjectProvider, ProctorMixin
+import logging
 
-import uuid
+log = logging.getLogger(__name__)
+
 ID = 1
 
-class Vehicle(object):
+
+class VehicleProvider(ObjectProvider):
+
+    def get(self, id):
+        global vehicles
+        log.info('Getting on {}'.format(self.model_class))
+        return vehicles[id]
+
+    def all(self):
+        global vehicles
+        for val in vehicles.itervalues():
+            yield val
+
+    def ids(self):
+        global vehicles
+        log.info("Getting ids")
+        for _id in vehicles.iterkeys():
+            yield _id
+
+    def filter(self, **kwargs):
+        global vehicles
+        for val in vehicles.itervalues():
+            yield val
+
+
+class Vehicle(ProctorMixin):
+
+    provider = VehicleProvider
+
     def __init__(self, year, make, model, color, doors):
-        #self.id = str(uuid.uuid4()).split("-")[-1]
         global ID
         self.id = str(ID)
         ID = ID + 1
@@ -93,22 +121,5 @@ def make_models():
     _.gas_level = 0
     vehicles[_.id] = _
 
-
-class ModelManager(object):
-    def get(self, id=id):
-        global vehicles
-        return vehicles[id]
-
-    def all(self):
-        global vehicles
-        for val in vehicles.itervalues():
-            yield val
-
-    def ids(self):
-        global vehicles
-        for _id in vehicles.iterkeys():
-            yield _id
-
-manager = ModelManager()
 
 make_models()

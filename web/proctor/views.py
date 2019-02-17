@@ -58,14 +58,12 @@ def get_model_class(class_name):
         config = apps.get_app_config(app_name)
         if config.models_module:
             klass = getattr(config.models_module, model_name)
-            klass.manager = getattr(config.models_module, 'manager')
             return klass
 
     for config in apps.get_app_configs():
         try:
             log.debug("Checking {} {} for {}".format(config.label, config.models_module, model_name))
             klass = getattr(config.models_module, model_name)
-            klass.manager = getattr(config.models_module, 'manager')
             return klass
         except Exception:
             pass
@@ -76,8 +74,8 @@ def get_model_instance(model, id):
     """Get a single instance of a model given an id"""
     if hasattr(model, "objects"):
         return model.objects.get(id=id)
-    if hasattr(model, "manager"):
-        return model.manager.get(id=id)
+    if hasattr(model, "provider"):
+        return model.provider.get(id)
     raise Exception("No model instance")
 
 
@@ -235,12 +233,12 @@ class CheckAll(View):
                 # Get the list of id's only first
                 # TODO: Checking across all instances is only supported on LDAP models
                 #ids = model_class.objects.all().values_list('id', flat=True)
-                ids = model_class.manager.ids()
+                ids = model_class.provider.ids()
 
                 for dev_id in ids:
                     try:
                         #item = model_class.objects.get(id=dev_id)
-                        item = model_class.manager.get(id=dev_id)
+                        item = model_class.provider.get(dev_id)
                     except (model_class.DoesNotExist, Exception):
                         continue
 
