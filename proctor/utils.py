@@ -12,13 +12,13 @@ import logging
 import serializers
 from filter_set import FilterSet
 from proctor import Proctor, ContextualCondition
-_proctor = Proctor()
 
 log = logging.getLogger("proctor.utils")
 
 
 def list_conditions():
     """List all the conditions"""
+    _proctor = Proctor()
     return map(serializers.registered_condition, _proctor._conditions._registry.values())
 
 
@@ -29,6 +29,7 @@ def search_conditions(filters, klass=None):
     filters: FilterSet spec
     klass: Class to prefilter results - will observe inheritence
     """
+    _proctor = Proctor()
     condition_list = []
     filter_set = FilterSet(filters)
     # Get a dict of conditions
@@ -43,6 +44,7 @@ def search_conditions(filters, klass=None):
 
 def get_context_condition(condition_id, obj):
     """Get a condition with a context loaded"""
+    _proctor = Proctor()
     condition = _proctor._conditions.get_condition(condition_id)
     if not condition:
         raise Exception("Conditions does not exist {}".format(condition_id))
@@ -51,6 +53,7 @@ def get_context_condition(condition_id, obj):
 
 def check_condition(condition_id, obj):
     """Get the result of checking a condition on an object"""
+    _proctor = Proctor()
     condition = _proctor._conditions.get_condition(condition_id)
     if not condition:
         raise Exception("Conditions does not exist {}".format(condition_id))
@@ -61,6 +64,7 @@ def check_condition(condition_id, obj):
 
 def fix_condition(condition_id, obj):
     """Get the result of fixing a condition on an object"""
+    _proctor = Proctor()
     condition = _proctor._conditions.get_condition(condition_id)
     if not condition:
         raise Exception("Conditions does not exist {}".format(condition_id))
@@ -76,6 +80,7 @@ def get_context_conditions(obj, condition_filters=None):
     Get all conditions for an object
     See search_conditions.
     """
+    _proctor = Proctor()
     _filters = condition_filters or {}
 
     # Get the contextual conditions
@@ -94,6 +99,7 @@ def check_conditions(obj, condition_filters=None):
     Checks only the conditions that match the condition_filters.
     See search_conditions.
     """
+    _proctor = Proctor()
     _filters = condition_filters or {}
 
     # Get the contextual conditions
@@ -117,6 +123,7 @@ def fix_conditions(obj, condition_filters=None):
     Checks only the conditions that match the condition_filters.
     See search_conditions.
     """
+    _proctor = Proctor()
     _filters = condition_filters or {}
 
     # Get the contextual conditions

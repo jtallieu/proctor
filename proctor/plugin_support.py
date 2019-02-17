@@ -29,13 +29,13 @@ def load_module(code_path):
             try:
                 fin.close()
                 sys.path.pop(sys.path.index(code_dir))
-            except:
+            except Exception:
                 pass
 
     except ImportError:
         log.exception("IMPORT ERROR")
 
-    except:
+    except Exception:
         log.exception("OTHER ERROR")
 
 

@@ -10,7 +10,6 @@ ilog = logging.getLogger('proctor.internal')
 
 
 class RegisteredCondition(Mapping):
-
     """
     Registered condition contains a condition and
     the attached rectifiers and detectors and some helper methods
@@ -24,7 +23,7 @@ class RegisteredCondition(Mapping):
         self.context = condition_class.context
 
     def sort_handlers(self):
-        """sort detectors and rectifiers by filter priority"""
+        """Sort detectors and rectifiers by filter priority"""
         self.detectors.sort(key=lambda x: x._filter_priority, reverse=True)
         self.rectifiers.sort(key=lambda x: x._filter_priority, reverse=True)
 
@@ -40,7 +39,6 @@ class RegisteredCondition(Mapping):
 
     def add_detector(self, detector_cls):
         """Add a detector to the registered condition"""
-
         if not detector_cls.context_name() == self.condition.context_name():
             warnings.warn(
                 "Detector {} not valid for {}: context mis-match".format(
@@ -62,9 +60,7 @@ class RegisteredCondition(Mapping):
         return None
 
     def get_rectifier(self, obj):
-        """
-        Get applicable rectifier checking through the filters
-        """
+        """Get applicable rectifier checking through the filters"""
         for rectifier in self.rectifiers:
             if hasattr(rectifier, "_filter"):
                 if rectifier()._filter(obj):
@@ -74,8 +70,8 @@ class RegisteredCondition(Mapping):
 
 
 class Registry(object):
-
     """Base Registry"""
+
     log = logging.getLogger("proctor.registry")
 
     def __init__(self):
@@ -87,7 +83,6 @@ class Registry(object):
 
 
 class ConditionRegistry(Registry):
-
     """
     Maintains a list of RegisteredCondition objects hashed by
     name and context.
@@ -99,9 +94,7 @@ class ConditionRegistry(Registry):
         self._proctorClasses = {}
 
     def register_rectifier(self, cls):
-        """
-        Check the rectifier properties before adding it to the registry
-        """
+        """Check the rectifier properties before adding it to the registry"""
         name = cls.__name__
         valid = True
         if not hasattr(cls, "_rectify"):
@@ -129,9 +122,7 @@ class ConditionRegistry(Registry):
             warnings.warn("{} not registerd as a rectifier".format(name), RectifierNotRegistered)
 
     def register_detector(self, cls):
-        """
-        Check the detector properties before adding it to the registry
-        """
+        """Check the detector properties before adding it to the registry"""
         name = cls.__name__
         valid = True
         if not hasattr(cls, "_detector"):
@@ -196,7 +187,6 @@ class ConditionRegistry(Registry):
 
     def register(self, cls):
         """Register a ProctorObject or a Condition"""
-
         if self.is_proctor_registered(cls):
             ilog.info("Already registered proctor {}".format(cls))
             return
@@ -232,9 +222,7 @@ class ConditionRegistry(Registry):
             print
 
     def get_registered_conditions(self, klass):
-        """
-        Get registeredConditions for a context
-        """
+        """Get registeredConditions for a context"""
         return self.__find_context(klass)
 
     def __find_context(self, klass):
@@ -256,7 +244,6 @@ class ConditionRegistry(Registry):
         MyStore has conditions defined, Store's won't be returned.  This should
         be changed to give back all in the heirarchy that match.
         """
-
         classes = [x.__name__ for x in inspect.getmro(klass)]
 
         # keep a tuple of (conditions to return, index of the class in the MRO)

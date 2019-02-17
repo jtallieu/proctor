@@ -30,11 +30,9 @@ def detector(func):
             if not c.context:
                 c.set_context(context)
             raise c
-        except KeyboardInterrupt:
-            raise
-        except:
+        except Exception as e:
             dlog.exception("Detector {} cause unhandled exception - cannot trust detection".format(func.__name__))
-            return
+            raise e
 
         # Examine the return value
         status = ret
@@ -46,8 +44,10 @@ def detector(func):
             try:
                 message = ret[1]
                 extra = ret[2]
-            except:
+            except IndexError:
                 pass
+            except Exception:
+                dlog.exception("Problem parsing return")
 
         if status:
             message = message.strip()
@@ -79,7 +79,7 @@ def rectifier(func):
             else:
                 rlog.debug("RECTIFIED")
             return val
-        except:
+        except Exception:
             rlog.exception("Exception when rectifying")
             return False
 

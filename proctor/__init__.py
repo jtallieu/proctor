@@ -19,6 +19,7 @@ At some point we could slap a GUI on the Proctor to code a condition on
 the fly so that we can add custom reporting without a deployment.
 """
 import sys
+import copy
 import hashlib
 import logging
 import warnings
@@ -54,21 +55,20 @@ class ProctorSingleton(type):
     The first instance created will load the plugins, if
     provided some paths.  see Proctor.__init__
     """
+
     _instances = {}
 
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            inst = super(ProctorSingleton, cls).__call__(*args, **kwargs)
-            cls._instances[cls] = inst
+    def __call__(self, *args, **kwargs):
+        if self not in self._instances:
+            inst = super(ProctorSingleton, self).__call__(*args, **kwargs)
+            self._instances[self] = inst
             inst.load_plugins()
-        return cls._instances[cls]
+        return self._instances[self]
 
 
 class Proctor(object):
+    """Manages conditions, detectors, and rectifiers collected as a registry"""
 
-    """
-    Manages conditions, detectors, and rectifiers collected as a registry
-    """
     __metaclass__ = ProctorSingleton
 
     def __init__(self, extpaths=None):
@@ -111,9 +111,7 @@ class Proctor(object):
         return self._conditions.condition_list()
 
     def register(self, cls):
-        """
-        Registers both Conditions and ProctorObjects
-        """
+        """Registers both Conditions and ProctorObjects"""
         log.debug("Registering {}".format(cls.__name__))
         logging.captureWarnings(True)
         self._conditions.register(cls)
@@ -124,7 +122,7 @@ class Proctor(object):
         return self._conditions.get_registry()
 
     def show_registry(self):
-        """shows the content of the registry"""
+        """Shows the content of the registry"""
         return self._conditions.show()
 
     def __get_conditions(self, context):
@@ -136,7 +134,7 @@ class Proctor(object):
 
     def find_condition(self, condition, klass):
         """
-        find a specific (registered) condition - will contain all associated detectors and rectifiers
+        Find a specific (registered) condition - will contain all associated detectors and rectifiers
 
         condition(str or condition instance) text for look up for
         klass(class) to find the conditions for
@@ -149,7 +147,7 @@ class Proctor(object):
 
     def conditions(self, obj, min_level=1, exposed=None):
         """
-        get contextual condition objects - aka conditions that can be called to detect and
+        Get contextual condition objects - aka conditions that can be called to detect and
         rectify on the given object
         """
         conditions = []
@@ -163,29 +161,23 @@ class Proctor(object):
         return conditions
 
     def detect_conditions(self, obj, min_level=1, exposed=None):
-        """
-        Executes the detector on contextualConditions
-        """
+        """Executes the detector on contextualConditions"""
         for condition in self.conditions(obj, min_level, exposed):
             condition.detect()
             yield condition
 
     def get_rectifier(self, condition, obj):
-        """
-        gets a condition rectifier for an obj
-        """
+        """Gets a condition rectifier for an obj"""
         try:
             return self.find_condition(condition, obj.__class__).get_rectifier(obj)
-        except:
+        except Exception:
             return None
 
     def get_contextual_condition(self, condition, obj):
-        """
-        Get the contextualCondition for this object
-        """
+        """Get the contextualCondition for this object"""
         try:
             return ContextualCondition(obj, self.find_condition(condition, obj.__class__))
-        except:
+        except Exception:
             return None
 
     def detect_condition(self, condition, obj):
@@ -201,10 +193,7 @@ class Proctor(object):
 
 
 class ProctorObjectMeta(type):
-
-    """
-    Handles the registration and checking ProctorObjects
-    """
+    """Handles the registration and checking ProctorObjects"""
 
     def __init__(cls, name, bases, attrs):
         """
@@ -262,7 +251,7 @@ class ProctorObjectMeta(type):
                     # try to get the value for the key
                     try:
                         value = get_property(obj, k)
-                    except:
+                    except Exception:
                         ilog.exception(u"Cannot get value for {}".format(k))
                         return False
                     ilog.debug("Value of {} {}".format(k, value))
@@ -274,7 +263,7 @@ class ProctorObjectMeta(type):
                     # try to get the value for the key
                     try:
                         value = get_property(obj, k)
-                    except:
+                    except Exception:
                         ilog.exception(u"Cannot get value for {}".format(k))
                         return True
                     ilog.debug("Value of {} {}".format(k, value))
@@ -319,7 +308,7 @@ class ProctorObjectMeta(type):
 
                 cls._filter_priority = priority
                 cls._filter = _filter
-            except:
+            except Exception:
                 warnings.warn("{} NOT REGISTERED: Cannot determine filter priority".format(name), NotRegistered)
                 return
 
@@ -336,8 +325,8 @@ class ProctorObjectMeta(type):
 
 
 class ProctorObject(object):
-
     """Base Proctor Object"""
+
     __metaclass__ = ProctorObjectMeta
     context = None
     applies_to = {}
@@ -354,10 +343,7 @@ class ProctorObject(object):
 
 
 class ConditionMeta(type):
-
-    """
-    Handles the registration and checking of a condition
-    """
+    """Handles the registration and checking of a condition"""
 
     def __init__(cls, name, bases, attrs):
         """
@@ -373,7 +359,6 @@ class ConditionMeta(type):
 
 
 class ContextualCondition(Mapping):
-
     """
     Represents a condition checker that contains a context.
     Will contain the detector and the rectifier for the object
@@ -394,6 +379,7 @@ class ContextualCondition(Mapping):
         self.pid = self.__reg_condition.condition.pid
         self.detector_tried = False
         self.rectifier_tried = False
+        self.last_message = ""
 
     @property
     def detectable(self):
@@ -406,11 +392,11 @@ class ContextualCondition(Mapping):
         else:
             return self.rectifier is not None
 
-    def context_name(cls):
-        return cls.context if isinstance(cls.context, basestring) else cls.context.__class__.__name__
+    def context_name(self):
+        return self.context if isinstance(self.context, basestring) else self.context.__class__.__name__
 
     def rectify(self):
-        """rectify the detected condition"""
+        """Rectify the detected condition"""
         if self.rectifiable and self.detected:
             self.rectifier_tried = True
             self.rectified = self.detected.rectify()
@@ -422,10 +408,17 @@ class ContextualCondition(Mapping):
             self.detector_tried = True
             try:
                 self.detector()._detector(self.context)
-                self.detected = None
+                self.detected = False
             except Condition as c:
+                # Condition raised means we 100% found the issue
                 self.detected = c
-        return self.detected is not None
+            except Exception as e:
+                # Any other exception means inconclusive
+                log.exception("unexpected exception in detector")
+                self.detected = None
+                self.last_message = e.message
+
+        return self.detected
 
     def dict(self):
         """Serialize the condition"""
@@ -442,13 +435,13 @@ class ContextualCondition(Mapping):
         data.rectifier_tried = self.rectifier_tried
         data.detector_tried = self.detector_tried
         data.error_code = 1
-        data.msg = ""
+        data.msg = self.last_message
         data.rectifiable = False
         if self.rectifier:
             data.rectifiable = True
             try:
                 data.rectifier = self.rectifier.__name__
-            except:
+            except Exception:
                 pass
         data.detectable = self.detectable
         data.rectified = self.rectified
@@ -456,14 +449,13 @@ class ContextualCondition(Mapping):
         if self.detected:
             data.update(self.detected.dict())
 
-        data.detected = self.detected is not None
+        data.detected = True if self.detected else self.detected
         data.error_code_string = self.context_name()
 
         return data
 
 
 class Condition(Exception):
-
     """
     Represents a condition.
     When raised, the ConditionObject will contain the
@@ -474,6 +466,7 @@ class Condition(Exception):
     caught in the code, can be checked to see if it has a rectifier
     and it can attempt to fix the condition before really failing.
     """
+
     __metaclass__ = ConditionMeta
     context = None
     detector = None
@@ -486,16 +479,14 @@ class Condition(Exception):
     # HACK because I cannot figure out code structure to check the type
     _is_condition = True
 
-    def __init__(self, message, context_instance=None, detector=None, inner_condition=None):
-        """
-        Called when condition is raised - Will attempt to find a rectifier
-        """
+    def __init__(self, message, context_instance=None, detector=None, inner_condition=None, **kwargs):
+        """Called when condition is raised - Will attempt to find a rectifier"""
         self.context_id = None
         self.context_instance = None
         self.detector = detector
-        self.data = ""
+        self.data = copy.deepcopy(kwargs)
 
-        super(Condition, self).__init__(message)
+        super(Condition, self).__init__(message, **kwargs)
         self.set_context(context_instance)
 
     def rectify(self):
@@ -520,11 +511,11 @@ class Condition(Exception):
     def _get_rectifier(self):
         try:
             self.rectifier = Proctor().get_rectifier(self, self.context_instance)
-        except:
+        except Exception:
             self.rectifier = None
 
     def dict(self):
-        """cast to serializable dict"""
+        """Cast to serializable dict"""
         data = Mapping()
         data.check_key = self.name
         data.error_code = 1
