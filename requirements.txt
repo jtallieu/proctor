@@ -1,0 +1,8 @@
+Django==1.11
+requests
+gevent
+django-filter
+djangorestframework
+Markdown
+coreapi
+drfdocs

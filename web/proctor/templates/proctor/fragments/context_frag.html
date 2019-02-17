@@ -1,0 +1,21 @@
+
+<div class="context" ctxt-id="{{ctxt_id}}" ctxt-class="{{ctxt_klass}}">
+    <div class="header">
+        {{ctxt_klass}} {{ctxt_id}} 
+        {% if lean %}
+        <a href="/proctor/{{ctxt_klass}}/{{ctxt_id}}" target="_blank">more details ...</a>
+        {% endif %}
+        {% if not lean %}
+        <button id="expand-all" style="float:right">MORE/LESS</button>
+        <button id="check-all" style="float:right">CHECK ALL</button>
+        <button id="check-selected" style="float:right">CHECK SELECTED</button>
+        {% endif %}
+        
+    </div>
+    <div class="condition-list">
+    {% for condition in conditions %}
+        {% include 'proctor/fragments/condition_ctxt.html' %}
+    {% endfor %}
+    </div>
+</div>
+

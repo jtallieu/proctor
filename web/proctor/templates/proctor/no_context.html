@@ -1,0 +1,105 @@
+{% extends "proctor/base.html" %}
+
+{% block proctorjs %}
+    <script type="text/javascript">
+        {% include 'proctor/js/proctor_no_context.js' %}
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="title-box spread">
+        <div class="main">
+            Eagle Eye Networks
+        </div>
+        <div class="sub">
+            Proctor
+        </div>
+    </div>
+    <div class="section">
+        <div class="selection panel">
+            <div class="header">
+                Select the conditions to check on all {{ctxt_klass}}s
+                <button id="expand-all" style="float:right">TOGGLE INFORMATION</button>
+                <!--<button id="check-all" style="float:right">CHECK ALL</button>-->
+                
+                
+            </div>
+            <div class="condition-list panel-body">
+            {% for condition in conditions %}
+                {% include 'proctor/fragments/registered_condition.html' %}
+            {% endfor %}
+            </div>
+            <div class="footer">
+                <div class="btn-group">
+                    <button id="check-selected">RUN PROCTOR</button>
+                </div>
+                <div class="info">
+                    Be patient while expecting results to start appearing.  Large data sets like Devices take a bit of time to get cranking.  Start being concerned after about 10-15 seconds.
+                </div>
+                
+                
+            </div>
+
+        </div>
+        <div class="ctxt-filter panel">
+            <div class="header">
+                Filter the {{ctxt_klass}}s
+            </div>
+            <div class="panel-body">
+                <table class="form-box">
+                    <tbody>
+                        <tr>
+                            <td>Type</td>
+                            <td><input type="text" name="device-type" value="bridge" disabled/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Parent Account</td>
+                            <td><input type="text" name="device-account" value="00010606" disabled/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Archivers</td>
+                            <td><input type="text" name="device-archivers" value="a296, a141, a121" disabled/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cluster</td>
+                            <td><input type="text" name="device-cluster" value="c000" disabled/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tags</td>
+                            <td><input type="text" name="device-tags" value="outside, common" disabled/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="footer">
+                <div class="info">
+                    Yeah, this doesn't work yet - for now you have to run the condition on ALL the {{ctxt_klass}}s.
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="results detected conditions">
+            <div class="header">Detected Conditions (0)</div>
+            <div class="result-list-wrap">
+                <div class="result-list">
+                </div>
+            </div>
+        </div>
+
+        <div class="results passed conditions">
+            <div class="header">Passed Conditions (0)</div>
+            <div class="result-list-wrap">
+                <div class="result-list">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
