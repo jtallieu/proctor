@@ -1,0 +1,33 @@
+<div id={{condition.pid}} class="condition {{condition.level_name}} detectable-{{condition.detectable}} ran-{{condition.detector_tried}} detected-{{condition.detected}}">
+    <div class="title">
+        <input type="checkbox" {% if not condition.detectable %}disabled{% endif %}/>
+        <span class="pid">[{{condition.pid}}]</span>
+        <span class="name">{{condition.name}}</span>
+                
+    </div>
+    <div class="body">
+        {% if condition.msg %}
+        <div class="large field message">
+            {{condition.msg|default:"-"}}
+        </div>
+        {% endif %}
+        
+        <div class="large field symptom">
+            <span class='label'>Symptom:</span>
+            <span class='value'>{{condition.symptom|default:"-"}}</span>
+        </div>
+        <div class="large field solution">
+            <span class='label'>Solution:</span>
+            <span class='value'>{{condition.solution|default:"-"}}</span>
+        </div>
+
+        <div class="short field level">
+            <span class='label'>Level:</span>
+            <span class='value'>{{condition.level|default:"-"}}</span>
+        </div>
+        <div class="attribution">
+            <span class="label">DETECTOR:</span><span class="value">{{condition.detectors}}</span> 
+            <span class="label">RECTIFIER:</span><span class="value">{{condition.rectifiers}}</span>
+        </div>
+    </div>
+</div>

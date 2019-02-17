@@ -1,0 +1,199 @@
+body {
+	font-family: monospace;
+	background-color: #040404;
+	color: #b0c4ce;
+}
+
+.proctor > div  {
+	width: 976px;
+	margin: auto;
+}
+.title-box {
+    background-color: #040404;
+    color: #a8bac8;
+    font-size: 20px;
+}
+
+.title-box.spread .main {
+    display: inline-block;
+}
+
+.title-box.spread .sub {
+    float: none;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.single-item.panel {
+	border: 1px solid #5e6061;
+}
+
+.proctor .context .header, .proctor .header {
+	margin-bottom: 7px;
+	font-weight: normal;
+}
+
+.condition .title {
+    font-size: 12px;
+}
+
+.condition .pid {
+    font-size: 12px;
+}
+
+.condition-list .condition {
+    background-color: initial;
+    margin-bottom: 5px
+}
+
+.condition.urgent .title {
+	border-left: 3px solid #792217;
+}
+
+.condition.serious .title {
+	border-left: 3px solid #886e11;
+}
+
+.condition.trivial .title {
+	border-left: 3px solid #2a5f2f;
+}
+
+.condition.ran-False .title .name {
+    color: #b0c4ce;
+    font-style: initial;
+}
+
+.condition.detectable-False .title,
+.condition.detectable-False .title .pid,
+.condition.detectable-False .title .name {
+    background-color: initial;
+    color: #51545a;
+    font-style: initial;
+}
+
+.condition.detectable-False .title{
+	border-left: 3px solid #1b1b1b;
+}
+
+.condition.detected-True .title {
+	background-color: initial;
+	font-weight: normal;
+}
+
+.condition.detected-True .title .name,
+.condition.detected-True .title .pid {
+	font-weight: normal;
+	color: #d04214;
+}
+
+.condition.ran-True.detected-False .title .name,
+.condition.ran-True.detected-False .title .pid {
+    color: #87b5f3;
+    font-weight: normal;
+}
+
+.condition.detected-None.ran-True .title,
+.condition.detected-None.ran-True .pid,
+.condition.detected-True.fix-tried-True.ran-True .title,
+.condition.detected-True.fix-tried-True.ran-True .title .name,
+.condition.detected-True.fix-tried-True.ran-True .pid {
+    color: #a59854;
+    background-color: initial;
+    font-weight: normal;
+    font-style: italic;
+}
+
+
+.field.message {
+    color: #b0c4ce;
+    font-family: MONOSPACE;
+    margin-bottom: 10px;
+    font-weight: normal;
+    border-left: 3px solid #b0c4ce;
+    padding: 3px 3px 6px 10px;
+    background-color: #171717;
+    font-size: 11px;
+}
+
+.condition .body {
+    margin-left: 10px;
+    margin-right: 60px;
+}
+
+.condition .title {
+    border: initial;
+    border-bottom: 1px dashed #5e6061;
+    padding-left: 4px;
+}
+
+.condition .body {
+    background-color: initial;
+    margin-bottom: 8px;
+    border: initial;
+}
+
+.field .label {
+    color: #657e8a;
+    font-weight: bold;
+    font-family: monospace;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+.field .value{
+    color: #b0c4ce;
+    font-family: monospace;
+    font-weight: normal;
+    font-size: 11px;
+}
+
+.condition .attribution {
+	color: #657e8a;
+}
+
+.condition .label {
+	font-weight: normal;
+}
+
+.condition-list {
+	clear: both;
+}
+
+button {
+	border: 1px solid #b0c4ce;
+	color: #b0c4ce;
+	font-family: monospace;
+	background-color: initial;
+	font-weight: normal;
+	font-size: 12px;
+	cursor:	pointer;
+}
+
+button:disabled {
+	color: #5d5959;
+	border: 1px solid #5d5959;
+}
+
+input[type="checkbox"] {
+	display: none;
+}
+
+
+
+.condition.serious .pid {
+    color: #b0c4ce;
+}
+
+.condition.urgent .pid {
+    color: #b0c4ce;
+}
+
+.condition.trivial .pid {
+    color: #b0c4ce;
+}
+
+.condition .title::after {
+	content: "";
+    clear: both;
+    display: table;
+}

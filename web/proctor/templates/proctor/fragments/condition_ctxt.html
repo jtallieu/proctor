@@ -1,0 +1,48 @@
+<div id={{condition.pid}} class="condition {{condition.level_name}} detectable-{{condition.detectable}} ran-{{condition.detector_tried}} detected-{{condition.detected}} fix-tried-{{condition.rectifier_tried}} fix-possible-{{condition.rectifiable}} fix-result-{{condition.rectified}}">
+    <div class="title">
+        {% if not lean %}
+            <input type="checkbox" {% if not condition.detectable %}disabled{% endif %}/>
+        {% endif %}
+        <span class="pid">[{{condition.pid}}]</span>
+        <span class="name">{{condition.name}}</span>
+        
+        {% if not lean %}
+            <button name="check" {% if not condition.detectable %}disabled{% endif %} style="float:right">CHECK</button>
+            {% if condition.rectifiable and condition.detected %}
+                {% if condition.rectifier_tried %}
+                    <button name="xxx" disabled style="float:right">CANNOT FIX</button>
+                {% else %}
+                    <button name="fix" style="float:right">FIX IT</button>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        
+    </div>
+    <div class="body">
+        {% if condition.msg %}
+        <div class="large field message">
+            <pre>{{condition.msg|default:"-"}}</pre>
+        </div>
+        {% endif %}
+        
+        {% if not lean %}
+        <div class="large field symptom">
+            <span class='label'>Symptom:</span>
+            <span class='value'>{{condition.symptom|default:"-"}}</span>
+        </div>
+        <div class="large field solution">
+            <span class='label'>Solution:</span>
+            <span class='value'>{{condition.solution|default:"-"}}</span>
+        </div>
+
+        <div class="short field level">
+            <span class='label'>Level:</span>
+            <span class='value'>{{condition.level|default:"-"}}</span>
+        </div>
+        {% endif %}
+        <div class="attribution">
+            <span class="label">DETECTOR:</span><span class="value">{{condition.detector}}</span> 
+            <span class="label">RECTIFIER:</span><span class="value">{{condition.rectifier}}</span>
+        </div>
+    </div>
+</div>

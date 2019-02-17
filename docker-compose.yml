@@ -1,0 +1,13 @@
+version: '2'
+services:
+    webapp:
+        build: .
+        command: ./run.sh
+        environment:
+            - LOGLEVEL_ROOT=INFO
+            - LOGLEVEL_PROCTOR=INFO
+        volumes:
+            - ./web:/usr/src/app
+            - ./proctor:/usr/local/lib/python2.7/site-packages/proctor_lib
+        ports:
+            - "80:8080"

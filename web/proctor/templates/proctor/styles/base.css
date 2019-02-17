@@ -1,0 +1,280 @@
+body {
+    margin: 0px;
+}
+.title-box {
+    background-color: #1372a5;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
+    overflow: auto;
+}
+.title-box.spread .main {
+    float: left;
+}
+.title-box.spread .sub {
+    float: right;
+}
+
+.header button {
+    margin-left: 4px;
+}
+
+.proctor > .context, .proctor .panel {
+    margin-bottom: 10px;
+}
+.single-item.panel {
+    width: 90%;
+    border: 1px solid #1372a5;
+}
+.section {
+    margin: 5px 20px;
+}
+
+.section .selection.panel {
+    min-width: 610px;
+    width: 60%;
+}
+.section .ctxt-filter.panel {
+    width: 35%;
+}
+.section > div {
+    display: inline-grid;
+}
+
+.proctor .header{
+    font-weight: bold;
+}
+
+.panel {
+    padding: 10px;
+    /* background-color: #f5f5f5; */
+}
+
+.panel .panel-body{
+    height: 250px;
+    overflow: scroll;
+    padding: 5px;
+    margin: 10px;
+    border: 2px solid #999999;
+    background-color: #afbabc;
+}
+
+/* Filter form */
+.ctxt-filter table {
+    width: 100%;
+    margin: auto;
+    background-color: #dedede;
+}
+/* Label */
+.ctxt-filter table td:first-child {
+    width: 30%;
+    font-weight: bold;
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+}
+.ctxt-filter table td:nth-child(2) {
+    width: 60%;
+}
+.ctxt-filter table td:nth-child(2) input {
+    width: 90%;
+}
+
+.condition-list .condition {
+    background-color: #fff;
+}
+
+.proctor .context .header {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.context .header a {
+    font-family: sans-serif;
+    font-size: 10px;
+}
+
+.results{
+    margin-bottom: 30px;
+    min-width: 470px;
+    width: 45%;
+    float: left;
+    margin-left: 20px;
+}
+
+.results> .header {
+    font-size: 18px;
+}
+
+.results.detected > .header {
+    color: #a81414;
+    border-bottom: 1px solid #a81414;
+}
+
+.results.passed > .header {
+    color: #146001;
+    border-bottom: 1px solid #146001;
+}
+
+.result-list {
+    margin: 5px;
+    padding: 5px;
+    background-color: #fff;
+}
+
+.selection button#check-selected.cancel {
+    background-color: #a81414;
+    color: #efefef;
+}
+
+.selection button#check-selected {
+    height: 40px;
+    color: #ffffff;
+    background-color: green;
+}
+.panel .footer {
+    overflow: auto;
+    padding: 0px 5px;
+    margin: 0px 10px;
+}
+
+.panel .footer div.info {
+    color: rosybrown;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+.panel .footer div {
+    display: inline-block;
+}
+.panel .footer .btn-group {
+    width: 100%;
+}
+.footer .btn-group button {
+    width: 100%;
+}
+
+
+.result-list .context {
+    margin-bottom: 3px;
+}
+
+.result-list-wrap {
+    height: 700px;
+    padding: 5px;
+    overflow: scroll;
+    background-color: #afbabc;
+    border: 2px solid #999999;
+}
+
+.condition .pid {
+    font-size: 13px;
+}
+
+.condition.urgent .pid{
+    color: #a81414;
+}
+
+.condition.serious .pid{
+    color: #f37f00;
+}
+
+.condition.trivial .pid {
+    color: green;
+}
+
+.condition .body {
+    padding: 5px 5px 15px 50px;
+    color: black;
+}
+
+.condition .label {
+    font-weight: bold;
+}
+
+.condition.ran-False .title .name {
+    font-style: italic;
+    color: #727272;
+}
+
+.condition.detectable-False .title .name {
+    font-style: italic;
+    color: #877071;
+}
+
+
+.condition.detectable-False .title{
+    background-color: #e2e2e2;
+}
+
+.condition.detected-True .title .name {
+    color: #a81414;
+    font-weight: bold;
+}
+
+.condition.ran-True.detected-False .title .name {
+    color: #01a036;
+    font-weight: bold;
+}
+
+.condition .title {
+    border: 1px solid #acacac;
+}
+
+.condition.detected-None.ran-True .title{
+    color: darkgoldenrod;
+    background-color: lightyellow;
+    font-weight: bold;
+}
+
+.condition.detected-True .title {
+    background-color: #f1e3e3;
+}
+
+.condition .body {
+    margin-left: 20px;
+}
+
+.condition .title {
+    font-size: 14px;
+}
+.condition .title .pid{
+    font-family: MONOSPACE;
+}
+
+.condition .title .name{
+    font-family: MONOSPACE;
+}
+
+.condition .body {
+    display: none;
+    border: 1px solid #cccccc;
+    background-color: #eeeeee;
+    margin-bottom: 5px;
+}
+
+.field {
+    font-family: sans-serif;
+    font-size: 12px;
+}
+.field .value {
+    color: #444444;
+}
+.field .label {
+    color: #332222;
+}
+
+.field.message{
+    color: black;
+    font-family: MONOSPACE;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.condition .attribution {
+    float: right;
+    clear: both;
+    font-size: 10px;
+    font-family: monospace;
+    color: #333333;
+}

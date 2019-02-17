@@ -1,0 +1,24 @@
+{% extends "proctor/base.html" %}
+
+{% block proctorjs %}
+    <script type="text/javascript">
+        {% include 'proctor/js/proctor_single_context.js' %}
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="title-box spread">
+        <div class="main">
+            Eagle Eye Networks
+        </div>
+        <div class="sub">
+            Proctor
+        </div>
+    </div>
+    <div class="section">
+        <div class="panel single-item">
+        {% include 'proctor/fragments/context_frag.html' %}
+        </div>
+    </div>
+{% endblock %}
+

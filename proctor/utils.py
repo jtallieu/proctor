@@ -11,7 +11,7 @@ All output from these utils should be json format.
 import logging
 import serializers
 from filter_set import FilterSet
-from proctor import Proctor, ContextualCondition
+from . import Proctor, ContextualCondition
 
 log = logging.getLogger("proctor.utils")
 
